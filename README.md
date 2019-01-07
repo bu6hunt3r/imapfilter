@@ -1,7 +1,7 @@
 # imapfilter
-## Simple filtering tool for moving junk mail to defined IMAP folder and deleting them
+### Simple filtering tool for moving junk mail to defined IMAP folder and deleting them
 
-Just apply rules like th e follwing in apply_rules-function
+Just apply rules like th e follwing in `apply_rules-function`:
 
 ```
 move_by_header_field('From', 'ebay', "Mist")
