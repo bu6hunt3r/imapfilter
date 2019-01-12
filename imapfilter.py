@@ -106,6 +106,7 @@ hdlr=logging.FileHandler("/home/cr0c0/.logs/imapfilter.log")
 formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
+logger.setLevel(logging.INFO)
 
 try:
     logging.info("*** Restarting at {}".format(str(datetime.now())))
