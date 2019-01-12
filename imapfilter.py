@@ -102,7 +102,7 @@ def main(config):
 config=configparser.ConfigParser()
 config.read('imapfilter.conf')
 logger=logging.getLogger('imapfilter')
-hdlr=logging.FileHandler("/home/cr0c0/.log/imapfilter.log")
+hdlr=logging.FileHandler("/home/cr0c0/.logs/imapfilter.log")
 formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
