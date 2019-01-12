@@ -8,11 +8,16 @@ from datetime import datetime
 import configparser
 import re
 
-loglevel=logging.INFO
 imapclient_loglevel=1
 polling_interval_s = 60
 fullupdate_interval_s = 3600
 restart_interval_s = 6*3600
+logger=logging.getLogger('imapfilter')
+hdlr=logging.FileHandler("/home/cr0c0/.logs/imapfilter.log")
+formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
+logger.setLevel(logging.INFO)
 
 def apply_rules(msgs, uid):
     def move_by_header_field(header_field, search_regexp, to_folder):
@@ -20,7 +25,7 @@ def apply_rules(msgs, uid):
         field_value=msg.get(header_field)
         # print(field_value)
         if re.search(search_regexp, field_value, re.IGNORECASE):
-            #print("uid: {} from: {} on subject: {} matches criterion".format(uid, msg.get('From'), msg.get('Subject')))
+            logger.info("uid: {} from: {} on subject: {} matches criterion".format(uid, msg.get('From'), msg.get('Subject')))
             msgs.copy([uid], to_folder)
             msgs.delete([uid])
 
@@ -74,7 +79,7 @@ class Messages:
 
 
 def process_msgs(msgs):
-    logging.info('*** Processing new msgs')
+    logger.info('*** Processing new msgs')
     new_uids = msgs.get_new_uids()
     for uid in new_uids:
         apply_rules(msgs, uid)
@@ -85,7 +90,7 @@ def main(config):
     imap_password=config.get('default','imap_password')
     imap_mailbox=config.get('default','imap_mailbox')
 
-    print("Login {}@{} for {}".format(imap_username, imap_hostname, imap_mailbox))
+    logger.info("Login {}@{} for {}".format(imap_username, imap_hostname, imap_mailbox))
     client=imapclient.IMAPClient(imap_hostname, ssl=True, use_uid=True)
     client.debug=imapclient_loglevel
     client.login(imap_username, imap_password)
@@ -94,25 +99,19 @@ def main(config):
     # print(folders)
 
     select_info=client.select_folder("INBOX")
-    print("%d messages in INBOX" % select_info[b'EXISTS'])
+    logger.info("%d messages in INBOX" % select_info[b'EXISTS'])
 
     msgs=Messages(client)
     process_msgs(msgs)
 
 config=configparser.ConfigParser()
 config.read('imapfilter.conf')
-logger=logging.getLogger('imapfilter')
-hdlr=logging.FileHandler("/home/cr0c0/.logs/imapfilter.log")
-formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
-hdlr.setFormatter(formatter)
-logger.addHandler(hdlr)
-logger.setLevel(logging.INFO)
 
 try:
-    logging.info("*** Restarting at {}".format(str(datetime.now())))
+    logger.info("*** Restarting at {}".format(str(datetime.now())))
     main(config)
 except Exception as e:
-    logging.error(e)
+    logger.error(e)
 
 
 
