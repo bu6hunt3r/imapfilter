@@ -23,7 +23,7 @@ def apply_rules(msgs, uid):
             #print("uid: {} from: {} on subject: {} matches criterion".format(uid, msg.get('From'), msg.get('Subject')))
             msgs.copy([uid], to_folder)
             msgs.delete([uid])
-        
+
     move_by_header_field('From', 'ebay', "Mist")
     move_by_header_field('From', 'cisco', "Mist")
     move_by_header_field('From', 'cybrary', "Mist")
@@ -66,13 +66,13 @@ class Messages:
         result=self.imap_client.copy(msg_uids, folder)
         print("copy({},{}) -> {}".format(msg_uids, folder, result))
         return  result
-    
+
     def delete(self, msg_uids):
         result=self.imap_client.delete_messages(msg_uids)
         print("delete({}) -> {}".format(msg_uids, result))
         return  result
 
-            
+
 def process_msgs(msgs):
     logging.info('*** Processing new msgs')
     new_uids = msgs.get_new_uids()
@@ -99,11 +99,13 @@ def main(config):
     msgs=Messages(client)
     process_msgs(msgs)
 
-
-
-
 config=configparser.ConfigParser()
 config.read('imapfilter.conf')
+logger=logging.getLogger('imapfilter')
+hdlr=logging.FileHandler("/home/cr0c0/.log/imapfilter.log")
+formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
 
 try:
     logging.info("*** Restarting at {}".format(str(datetime.now())))
