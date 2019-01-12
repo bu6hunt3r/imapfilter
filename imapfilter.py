@@ -14,8 +14,8 @@ fullupdate_interval_s = 3600
 restart_interval_s = 6*3600
 logger=logging.getLogger('imapfilter')
 hdlr=logging.FileHandler("/home/cr0c0/.logs/imapfilter.log")
-formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
-hdlr.setFormatter(formatter)
+#formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
+#hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
