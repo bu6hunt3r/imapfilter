@@ -3,6 +3,7 @@ import imapclient
 from imapclient import IMAPClient as IMAPClient
 import email
 import logging
+from logging.config import fileConfig as fileConfig
 import time
 from datetime import datetime
 import configparser
@@ -12,10 +13,12 @@ imapclient_loglevel=1
 polling_interval_s = 60
 fullupdate_interval_s = 3600
 restart_interval_s = 6*3600
-logger=logging.getLogger('imapfilter')
+
+fileConfig('./imapfilter.conf')
+logger=logging.getLogger()
+
+#logger=logging.getLogger('imapfilter')
 hdlr=logging.FileHandler("/home/cr0c0/.logs/imapfilter.log")
-#formatter=logging.Formatter('%(asciitime)s %(levelname)s %(message)s')
-#hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
