@@ -3,7 +3,7 @@ import imapclient
 from imapclient import IMAPClient as IMAPClient
 import email
 import logging
-from logging.config import fileConfig as fileConfig
+from logging.config import fileConfig 
 import time
 from datetime import datetime
 import configparser
@@ -14,7 +14,7 @@ polling_interval_s = 60
 fullupdate_interval_s = 3600
 restart_interval_s = 6*3600
 
-fileConfig('./imapfilter.conf')
+fileConfig('/home/cr0c0/imapfilter/imapfilter.log.conf')
 logger=logging.getLogger()
 
 #logger=logging.getLogger('imapfilter')
@@ -36,6 +36,8 @@ def apply_rules(msgs, uid):
     move_by_header_field('From', 'cisco', "Mist")
     move_by_header_field('From', 'cybrary', "Mist")
     move_by_header_field('From', 'linuxacademy', "Mist")
+    move_by_header_field('From', 'netflix', "Mist")
+    move_by_header_field('From', 'blackhat', "Mist")
     move_by_header_field('Subject', 'Weihnachten', "Mist")
 
 class Messages:
@@ -108,7 +110,7 @@ def main(config):
     process_msgs(msgs)
 
 config=configparser.ConfigParser()
-config.read('imapfilter.conf')
+config.read('/home/cr0c0/imapfilter/imapfilter.conf')
 
 try:
     logger.info("*** Restarting at {}".format(str(datetime.now())))
