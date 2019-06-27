@@ -38,6 +38,9 @@ def apply_rules(msgs, uid):
     move_by_header_field('From', 'linuxacademy', "Mist")
     move_by_header_field('From', 'netflix', "Mist")
     move_by_header_field('From', 'blackhat', "Mist")
+    move_by_header_field('From', 'feedback@binarysecuritysolutions.com', "Mist")
+    move_by_header_field('From', 'youtube.com', "Mist")
+    move_by_header_field('From', 'vodafone.de', "Mist")
     move_by_header_field('Subject', 'Weihnachten', "Mist")
 
 class Messages:
